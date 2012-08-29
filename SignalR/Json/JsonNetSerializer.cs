@@ -37,7 +37,7 @@ namespace SignalR
         /// <returns>A JSON string representation of the object.</returns>
         public string Stringify(object obj)
         {
-            return JsonConvert.SerializeObject(obj, _settings);
+            return JsonConvert.SerializeObject(obj, Formatting.None, _settings);
         }
 
         /// <summary>
