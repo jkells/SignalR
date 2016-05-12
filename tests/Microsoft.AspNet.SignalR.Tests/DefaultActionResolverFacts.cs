@@ -335,6 +335,11 @@ namespace Microsoft.AspNet.SignalR.Tests
                 throw new NotImplementedException();
             }
 
+            public System.Threading.Tasks.Task OnReceiveChannelOpened()
+            {
+                throw new NotImplementedException();
+            }
+
             public System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
             {
                 throw new NotImplementedException();

@@ -30,6 +30,12 @@ namespace Microsoft.AspNet.SignalR.Transports
         Func<Task> Reconnected { get; set; }
 
         /// <summary>
+        /// Gets or sets a callback that is invoked when the transport opens a channel to the client. This will
+        /// be called every time a client connects / re-connects, changes protocol or starts a new long polling request
+        /// </summary>
+        Func<Task> ReceiveChannelOpened { get; set; }
+
+        /// <summary>
         /// Gets or sets a callback that is invoked when the transport disconnects.
         /// </summary>
         Func<bool, Task> Disconnected { get; set; }

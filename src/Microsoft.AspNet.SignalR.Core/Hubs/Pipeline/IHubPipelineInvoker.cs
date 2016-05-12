@@ -40,6 +40,13 @@ namespace Microsoft.AspNet.SignalR.Hubs
         Task Reconnect(IHub hub);
 
         /// <summary>
+        /// To be called when a channel is opened to the client <see cref="HubDispatcher"/> for each <see cref="IHub"/> the client
+        /// connects to. By default, this results in the <see cref="IHub"/>'s OnReceiveChannelOpened method being invoked.
+        /// </summary>
+        /// <param name="hub">A <see cref="IHub"/> the client is reconnected to.</param>
+        Task ReceiveChannelOpened(IHub hub);
+
+        /// <summary>
         /// To be called when a client disconnects from the <see cref="HubDispatcher"/> for each <see cref="IHub"/> the client
         /// was connected to. By default, this results in the <see cref="IHub"/>'s OnDisconnected method being invoked.
         /// </summary>

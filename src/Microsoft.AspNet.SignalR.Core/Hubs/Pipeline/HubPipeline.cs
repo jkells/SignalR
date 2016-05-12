@@ -49,6 +49,11 @@ namespace Microsoft.AspNet.SignalR.Hubs
             return Pipeline.Reconnect(hub);
         }
 
+        public Task ReceiveChannelOpened(IHub hub)
+        {
+            return Pipeline.ReceiveChannelOpened(hub);
+        }
+
         public Task Disconnect(IHub hub, bool stopCalled)
         {
             return Pipeline.Disconnect(hub, stopCalled);
@@ -75,6 +80,7 @@ namespace Microsoft.AspNet.SignalR.Hubs
             public Func<IHubIncomingInvokerContext, Task<object>> Invoke;
             public Func<IHub, Task> Connect;
             public Func<IHub, Task> Reconnect;
+            public Func<IHub, Task> ReceiveChannelOpened;
             public Func<IHub, bool, Task> Disconnect;
             public Func<HubDescriptor, IRequest, bool> AuthorizeConnect;
             public Func<HubDescriptor, IRequest, IList<string>, IList<string>> RejoiningGroups;
@@ -86,6 +92,7 @@ namespace Microsoft.AspNet.SignalR.Hubs
                 Invoke = Compose<Func<IHubIncomingInvokerContext, Task<object>>>(modules, (m, f) => m.BuildIncoming(f))(HubDispatcher.Incoming);
                 Connect = Compose<Func<IHub, Task>>(modules, (m, f) => m.BuildConnect(f))(HubDispatcher.Connect);
                 Reconnect = Compose<Func<IHub, Task>>(modules, (m, f) => m.BuildReconnect(f))(HubDispatcher.Reconnect);
+                ReceiveChannelOpened = Compose<Func<IHub, Task>>(modules, (m, f) => m.BuildReceiveChannelOpened(f))(HubDispatcher.ReceiveChannelOpened);
                 Disconnect = Compose<Func<IHub, bool, Task>>(modules, (m, f) => m.BuildDisconnect(f))(HubDispatcher.Disconnect);
                 AuthorizeConnect = Compose<Func<HubDescriptor, IRequest, bool>>(modules, (m, f) => m.BuildAuthorizeConnect(f))((h, r) => true);
                 RejoiningGroups = Compose<Func<HubDescriptor, IRequest, IList<string>, IList<string>>>(modules, (m, f) => m.BuildRejoiningGroups(f))((h, r, g) => g);

@@ -51,6 +51,15 @@ namespace Microsoft.AspNet.SignalR.Hubs
         Func<IHub, Task> BuildReconnect(Func<IHub, Task> reconnect);
 
         /// <summary>
+        /// Wraps a function that is called when a receive channel is opened between the client and the <see cref="HubDispatcher"/> for each
+        /// <see cref="IHub"/> the client connects to. By default, this results in the <see cref="IHub"/>'s
+        /// OnReceiveChannelOpened method being invoked.
+        /// </summary>
+        /// <param name="receiveChannelOpened">A function to be called when a client reconnects to a hub.</param>
+        /// <returns>A wrapped function to be called when a client reconnects to a hub.</returns>
+        Func<IHub, Task> BuildReceiveChannelOpened(Func<IHub, Task> receiveChannelOpened);
+
+        /// <summary>
         /// Wraps a function that is called  when a client disconnects from the <see cref="HubDispatcher"/> for each
         /// <see cref="IHub"/> the client was connected to. By default, this results in the <see cref="IHub"/>'s
         /// OnDisconnected method being invoked.
