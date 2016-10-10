@@ -69,6 +69,15 @@ namespace Microsoft.AspNet.SignalR.Hubs
             return TaskAsyncHelper.Empty;
         }
 
+        /// <summary>
+        /// Called when the receive channel is connected to this hub instance.
+        /// </summary>
+        /// <returns>A <see cref="Task"/></returns>
+        public virtual Task OnReceiveChannelOpened()
+        {
+            return TaskAsyncHelper.Empty;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
         }

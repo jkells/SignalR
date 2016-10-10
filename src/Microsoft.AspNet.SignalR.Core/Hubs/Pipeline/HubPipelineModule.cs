@@ -210,6 +210,25 @@ namespace Microsoft.AspNet.SignalR.Hubs
         }
 
         /// <summary>
+        /// Wraps a function that is called when a receive channel is opened between the client and the <see cref="HubDispatcher"/> for each
+        /// <see cref="IHub"/> the client connects to. By default, this results in the <see cref="IHub"/>'s
+        /// OnReceiveChannelOpened method being invoked.
+        /// </summary>
+        /// <param name="receiveChannelOpened">A function to be called when a client reconnects to a hub.</param>
+        /// <returns>A wrapped function to be called when a client reconnects to a hub.</returns>
+        public virtual Func<IHub, Task> BuildReceiveChannelOpened(Func<IHub, Task> receiveChannelOpened)
+        {
+            return (hub) =>
+            {
+                if (OnBeforeReceiveChannelOpened(hub))
+                {
+                    return receiveChannelOpened(hub).OrEmpty().Then(h => OnAfterReceiveChannelOpened(h), hub);
+                }
+                return TaskAsyncHelper.Empty;
+            };
+        }
+
+        /// <summary>
         /// This method is called after the connect components of any modules added later to the <see cref="IHubPipeline"/> are
         /// executed and after <see cref="IHub.OnConnected"/> is executed, if at all.
         /// </summary>
@@ -235,6 +254,21 @@ namespace Microsoft.AspNet.SignalR.Hubs
         }
 
         /// <summary>
+        /// This method is called before the receiveChannelOpened components of any modules added later to the <see cref="IHubPipeline"/> are
+        /// executed. If this returns false, then those later-added modules and the <see cref="IHub.OnReceiveChannelOpened"/> method will
+        /// not be run.
+        /// </summary>
+        /// <param name="hub">The hub the receive channel has been opened to.</param>
+        /// <returns>
+        /// true, if the receiveChannelOpened components of later added modules and the <see cref="IHub.OnReceiveChannelOpened"/> method should be executed;
+        /// false, otherwise.
+        /// </returns>
+        protected virtual bool OnBeforeReceiveChannelOpened(IHub hub)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// This method is called after the reconnect components of any modules added later to the <see cref="IHubPipeline"/> are
         /// executed and after <see cref="IHub.OnReconnected"/> is executed, if at all.
         /// </summary>
@@ -242,6 +276,15 @@ namespace Microsoft.AspNet.SignalR.Hubs
         protected virtual void OnAfterReconnect(IHub hub)
         {
 
+        }
+
+        /// <summary>
+        /// This method is called after the receiveChannelOpened components of any modules added later to the <see cref="IHubPipeline"/> are
+        /// executed and after <see cref="IHub.OnReceiveChannelOpened"/> is executed, if at all.
+        /// </summary>
+        /// <param name="hub">The hub the client has reconnected to.</param>
+        protected virtual void OnAfterReceiveChannelOpened(IHub hub)
+        {
         }
 
         /// <summary>

@@ -282,6 +282,11 @@ namespace Microsoft.AspNet.SignalR
                 return TaskAsyncHelper.FromMethod(() => OnReceived(context.Request, connectionId, data).OrEmpty());
             };
 
+            Transport.ReceiveChannelOpened = () =>
+            {
+                return TaskAsyncHelper.FromMethod(() => OnReceiveChannelOpened(context.Request, connectionId).OrEmpty());
+            };
+
             Transport.Disconnected = clean =>
             {
                 return TaskAsyncHelper.FromMethod(() => OnDisconnected(context.Request, connectionId, stopCalled: clean).OrEmpty());
@@ -459,6 +464,17 @@ namespace Microsoft.AspNet.SignalR
         /// <param name="connectionId">The id of the re-connecting client.</param>
         /// <returns>A <see cref="Task"/> that completes when the re-connect operation is complete.</returns>
         protected virtual Task OnReconnected(IRequest request, string connectionId)
+        {
+            return TaskAsyncHelper.Empty;
+        }
+
+        /// <summary>
+        /// Called whenever a channel is opened to the client, this could be a connect, reconnect or protocol switch
+        /// </summary>
+        /// <param name="request">The <see cref="IRequest"/> for the current connection.</param>
+        /// <param name="connectionId">The id of the re-connecting client.</param>
+        /// <returns>A <see cref="Task"/> that completes when the re-connect operation is complete.</returns>
+        protected virtual Task OnReceiveChannelOpened(IRequest request, string connectionId)
         {
             return TaskAsyncHelper.Empty;
         }

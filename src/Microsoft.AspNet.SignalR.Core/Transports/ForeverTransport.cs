@@ -79,6 +79,8 @@ namespace Microsoft.AspNet.SignalR.Transports
 
         public Func<Task> Reconnected { get; set; }
 
+        public Func<Task> ReceiveChannelOpened { get; set; }
+
         // Unit testing hooks
         internal Action AfterReceive;
         internal Action BeforeCancellationTokenCallbackRegistered;
@@ -197,7 +199,7 @@ namespace Microsoft.AspNet.SignalR.Transports
 
             initialize = initialize ?? _emptyTaskFunc;
 
-            Func<Task> fullInit = () => initialize().ContinueWith(_connectTcs);
+            Func<Task> fullInit = () => initialize().Then(ReceiveChannelOpened).ContinueWith(_connectTcs);
 
             return ProcessMessages(connection, fullInit);
         }

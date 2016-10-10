@@ -295,6 +295,11 @@ namespace Microsoft.AspNet.SignalR.Hubs
             return hub.OnReconnected();
         }
 
+        internal static Task ReceiveChannelOpened(IHub hub)
+        {
+            return hub.OnReceiveChannelOpened();
+        }
+
         internal static Task Disconnect(IHub hub, bool stopCalled)
         {
             return hub.OnDisconnected(stopCalled);
@@ -367,6 +372,11 @@ namespace Microsoft.AspNet.SignalR.Hubs
         protected override Task OnReconnected(IRequest request, string connectionId)
         {
             return ExecuteHubEvent(request, connectionId, hub => _pipelineInvoker.Reconnect(hub));
+        }
+
+        protected override Task OnReceiveChannelOpened(IRequest request, string connectionId)
+        {
+            return ExecuteHubEvent(request, connectionId, hub => _pipelineInvoker.ReceiveChannelOpened(hub));
         }
 
         protected override IList<string> OnRejoiningGroups(IRequest request, IList<string> groups, string connectionId)

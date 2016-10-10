@@ -35,6 +35,12 @@ namespace Microsoft.AspNet.SignalR.Hubs
         Task OnReconnected();
 
         /// <summary>
+        /// Called when a channel is opened from the <see cref="IHub"/> to the client, this could be after a
+        /// connect, reconnect or transport change. 
+        /// </summary>
+        Task OnReceiveChannelOpened();
+
+        /// <summary>
         /// Called when a connection disconnects from the <see cref="IHub"/> gracefully or due to a timeout.
         /// </summary>
         /// <param name="stopCalled">
