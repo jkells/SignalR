@@ -508,6 +508,10 @@ namespace Microsoft.AspNet.SignalR.Tests.Server.Transports
             var transportConnection = new Mock<ITransportConnection>();
             var traceManager = new Mock<ITraceManager>();
             counters.SetupGet(m => m.ConnectionsConnected).Returns(new NoOpPerformanceCounter());
+            counters.SetupGet(m => m.ErrorsTransportPerSec).Returns(new NoOpPerformanceCounter());
+            counters.SetupGet(m => m.ErrorsTransportTotal).Returns(new NoOpPerformanceCounter());
+            counters.SetupGet(m => m.ErrorsAllPerSec).Returns(new NoOpPerformanceCounter());
+            counters.SetupGet(m => m.ErrorsAllTotal).Returns(new NoOpPerformanceCounter());
             traceManager.Setup(m => m[It.IsAny<string>()]).Returns(new System.Diagnostics.TraceSource("foo"));
 
             Func<PersistentResponse, object, Task<bool>> callback = null;

@@ -199,7 +199,8 @@ namespace Microsoft.AspNet.SignalR.Transports
 
             initialize = initialize ?? _emptyTaskFunc;
 
-            Func<Task> fullInit = () => initialize().Then(ReceiveChannelOpened).ContinueWith(_connectTcs);
+            Func<Task> emptyReceiveChannelOpened = () => TaskAsyncHelper.Empty;
+            Func<Task> fullInit = () => initialize().Then(ReceiveChannelOpened ?? emptyReceiveChannelOpened).ContinueWith(_connectTcs);
 
             return ProcessMessages(connection, fullInit);
         }
