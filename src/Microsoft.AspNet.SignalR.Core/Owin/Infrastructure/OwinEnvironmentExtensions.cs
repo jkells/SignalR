@@ -49,6 +49,8 @@ namespace Microsoft.AspNet.SignalR
 
         internal static bool SupportsWebSockets(this IDictionary<string, object> environment)
         {
+            return true;
+            /*
             object value;
             if (environment.TryGetValue(OwinConstants.ServerCapabilities, out value))
             {
@@ -59,6 +61,7 @@ namespace Microsoft.AspNet.SignalR
                 }
             }
             return false;
+            */
         }
 
         internal static bool IsDebugEnabled(this IDictionary<string, object> environment)
